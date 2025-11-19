@@ -48,6 +48,14 @@
   gap: 16px;
 }
 
+.ai-codi-complete2-page__content {
+  flex: 1;
+  padding: 110px 20px 130px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .ai-codi-page__title {
   font-size: 20px;
   font-weight: 700;
@@ -288,6 +296,39 @@
   color: #444;
   font-size: 13px;
   line-height: 1.5;
+}
+
+.feedback-note {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #444;
+}
+
+.dual-button-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.dual-button {
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dual-button--secondary {
+  background: #ff383c;
+  color: #fff;
+}
+
+.dual-button--primary {
+  background: #111;
+  color: #fff;
 }
 
 .topbar__status-row {

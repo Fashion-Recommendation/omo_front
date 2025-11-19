@@ -1,17 +1,25 @@
-import { useState } from 'react'
+import { useMemo } from 'react'
 
 import TopBar from '../components/TopBar'
 import BottomNav from '../components/BottomNav'
+import useCodiStore from '../store/useCodiStore'
 
-const situationOptions = ['출근', '데이트', '여행', '학교', '모임', '기타']
-const activityOptions = ['실외 활동', '실내 활동']
-const seasonOptions = ['봄', '여름', '가을', '겨울']
-
-const AiCoordiRecommendation = () => {
-  const [selectedSituation, setSelectedSituation] = useState(situationOptions[0])
-  const [season, setSeason] = useState('가을')
-  const [temperature, setTemperature] = useState('12')
-  const [selectedActivity, setSelectedActivity] = useState(activityOptions[0])
+/** AI 옷 기준 추천 페이지 */
+const AiCodiRecommendation = () => {
+  const {
+    situationOptions,
+    activityOptions,
+    seasonOptions,
+    selectedSituation,
+    selectedActivity,
+    season,
+    temperature,
+    baseClothing,
+    setSelectedSituation,
+    setSelectedActivity,
+    setSeason,
+    setTemperature,
+  } = useCodiStore()
 
   const handleBack = () => {
     console.log('뒤로가기 예정: 히스토리 이동 또는 라우팅 연결')
@@ -25,15 +33,18 @@ const AiCoordiRecommendation = () => {
     console.log('옷 추가 페이지로 이동 예정')
   }
 
-  const handleRecommend = async (event) => {
-    event.preventDefault()
-    const payload = {
+  const payload = useMemo(
+    () => ({
       situation: selectedSituation,
       season,
       temperature: Number(temperature),
       activity: selectedActivity,
-    }
+    }),
+    [selectedSituation, season, temperature, selectedActivity],
+  )
 
+  const handleRecommend = async (event) => {
+    event.preventDefault()
     console.log('AI 추천 요청 payload', payload)
 
     // TODO: 백엔드 API 연동
@@ -45,13 +56,13 @@ const AiCoordiRecommendation = () => {
   }
 
   return (
-    <div className="page ai-coordi-page">
+    <div className="page ai-codi-page">
       <TopBar onBack={handleBack} onProfile={handleProfile} />
 
-      <main className="ai-coordi-page__content">
-        <h1 className="ai-coordi-page__title">AI 코디 추천</h1>
+      <main className="ai-codi-page__content">
+        <h1 className="ai-codi-page__title">AI 코디 추천</h1>
 
-        <form className="ai-coordi-page__form" onSubmit={handleRecommend}>
+        <form className="ai-codi-page__form" onSubmit={handleRecommend}>
           <section className="card">
             <div className="card__header">
               <h2>기존 옷 선택하기</h2>
@@ -63,8 +74,8 @@ const AiCoordiRecommendation = () => {
             <div className="selected-item">
               <div className="selected-item__thumb" aria-hidden="true" />
               <div>
-                <p className="selected-item__name">브라운 목폴라 니트</p>
-                <p className="selected-item__hash">#출근 #포멀</p>
+                <p className="selected-item__name">{baseClothing.name}</p>
+                <p className="selected-item__hash">{baseClothing.tags}</p>
               </div>
             </div>
           </section>
@@ -113,7 +124,7 @@ const AiCoordiRecommendation = () => {
 
           <section className="card">
             <h2>주로 무슨 활동을 하시나요?</h2>
-            <div className="chip-group chip-group--wide">
+              <div className="chip-group chip-group--wide">
               {activityOptions.map((option) => (
                 <button
                   key={option}
@@ -138,5 +149,5 @@ const AiCoordiRecommendation = () => {
   )
 }
 
-export default AiCoordiRecommendation
+export default AiCodiRecommendation
 

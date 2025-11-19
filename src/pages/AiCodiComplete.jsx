@@ -1,25 +1,16 @@
 import TopBar from '../components/TopBar'
 import BottomNav from '../components/BottomNav'
+import useCodiStore from '../store/useCodiStore'
 
-const summaryItems = [
-  { label: '상황', value: '출근' },
-  { label: '계절', value: '가을' },
-  { label: '온도', value: '15℃' },
-  { label: '활동', value: '실외' },
-]
+const AiCodiComplete = () => {
+  const {
+    selectedSituation,
+    season,
+    temperature,
+    selectedActivity,
+    recommendedOutfits,
+  } = useCodiStore()
 
-const recommendedOutfits = [
-  {
-    title: '브라운 목폴라 니트 + 슬랙스 + 블랙 로퍼',
-    tags: '#출근 #포멀',
-  },
-  {
-    title: '브라운 목폴라 니트 + 화이트 와이드 팬츠 + 스타디움 자켓',
-    tags: '#데이트 #꾸안꾸',
-  },
-]
-
-const AiCoordiComplete = () => {
   const handleBack = () => {
     console.log('뒤로가기 예정: 이전 페이지로 이동')
   }
@@ -33,14 +24,19 @@ const AiCoordiComplete = () => {
   }
 
   return (
-    <div className="page ai-coordi-complete-page">
+    <div className="page ai-codi-complete-page">
       <TopBar onBack={handleBack} onProfile={handleProfile} />
 
-      <main className="ai-coordi-complete-page__content">
+      <main className="ai-codi-complete-page__content">
         <section className="card">
           <h2>오늘의 코디</h2>
           <dl className="summary-list">
-            {summaryItems.map((item) => (
+            {[
+              { label: '상황', value: selectedSituation },
+              { label: '계절', value: season },
+              { label: '온도', value: `${temperature}℃` },
+              { label: '활동', value: selectedActivity },
+            ].map((item) => (
               <div className="summary-list__row" key={item.label}>
                 <dt>{item.label}</dt>
                 <dd>{item.value}</dd>
@@ -74,5 +70,5 @@ const AiCoordiComplete = () => {
   )
 }
 
-export default AiCoordiComplete
+export default AiCodiComplete
 

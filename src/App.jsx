@@ -1,8 +1,28 @@
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+
 import './App.css'
-import AiCoordiRecommendation from './pages/AiCoordiRecommendation'
+import AiCodiRecommendation from './pages/AiCodiRecommendation'
+import AiCodiComplete from './pages/AiCodiComplete'
+import AiCodiFeedback from './pages/AiCodiFeedback'
 
 const App = () => {
-  return <AiCoordiRecommendation />
+  const aiPages = [
+    { path: 'AiCodiRecommendation', element: <AiCodiRecommendation /> },
+    { path: 'AiCodiComplete', element: <AiCodiComplete /> },
+    { path: 'AiCodiFeedback', element: <AiCodiFeedback /> },
+  ]
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to="/ai/AiCodiRecommendation" replace />} />
+        {aiPages.map(({ path, element }) => (
+          <Route key={path} path={`/ai/${path}`} element={element} />
+        ))}
+        <Route path="*" element={<Navigate to="/ai/AiCodiRecommendation" replace />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App

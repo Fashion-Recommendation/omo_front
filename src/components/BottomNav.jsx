@@ -1,3 +1,5 @@
+import { useNavigate, useLocation } from 'react-router-dom'
+
 const ClosetIcon = () => (
   <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
     <rect x="4" y="4" width="16" height="16" rx="2" ry="2" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -30,6 +32,27 @@ const ShopIcon = () => (
   </svg>
 )
 
+const CameraIcon = () => (
+  <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+    <path
+      d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <circle
+      cx="12"
+      cy="13"
+      r="4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+  </svg>
+)
+
 const ProfileIcon = () => (
   <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
     <circle cx="12" cy="9" r="4" stroke="currentColor" strokeWidth="2" fill="none" />
@@ -38,26 +61,46 @@ const ProfileIcon = () => (
 )
 
 const navItems = [
-  { label: '옷장', icon: ClosetIcon, isActive: false },
-  { label: '코디추천', icon: RecommendIcon, isActive: true },
-  { label: '77샵', icon: ShopIcon, isActive: false },
-  { label: '프로필', icon: ProfileIcon, isActive: false },
+  { label: '옷장', icon: ClosetIcon, path: '/closet' },
+  { label: '코디추천', icon: RecommendIcon, path: '/ai/AiCodiRecommendation' },
+  { label: 'SNS', icon: CameraIcon, path: '/sns' },
+  { label: '77샵', icon: ShopIcon, path: '/shop' },
+  { label: '프로필', icon: ProfileIcon, path: '/mypage' },
 ]
 
-const BottomNavItem = ({ label, Icon, isActive }) => (
-  <button type="button" className={`bottom-nav__item ${isActive ? 'is-active' : ''}`}>
+const BottomNavItem = ({ label, Icon, isActive, onClick }) => (
+  <button type="button" className={`bottom-nav__item ${isActive ? 'is-active' : ''}`} onClick={onClick}>
     <Icon />
     <span>{label}</span>
   </button>
 )
 
-const BottomNav = () => (
-  <nav className="bottom-nav" aria-label="하단 메뉴">
-    {navItems.map((item) => (
-      <BottomNavItem key={item.label} label={item.label} Icon={item.icon} isActive={item.isActive} />
-    ))}
-  </nav>
-)
+const BottomNav = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const isActive = (path) => {
+    if (path === '/closet') return location.pathname.startsWith('/closet')
+    if (path === '/ai/AiCodiRecommendation') return location.pathname.startsWith('/ai')
+    if (path === '/sns') return location.pathname.startsWith('/sns')
+    if (path === '/mypage') return location.pathname.startsWith('/mypage')
+    return location.pathname === path
+  }
+
+  return (
+    <nav className="bottom-nav" aria-label="하단 메뉴">
+      {navItems.map((item) => (
+        <BottomNavItem
+          key={item.label}
+          label={item.label}
+          Icon={item.icon}
+          isActive={isActive(item.path)}
+          onClick={() => navigate(item.path)}
+        />
+      ))}
+    </nav>
+  )
+}
 
 export default BottomNav
 

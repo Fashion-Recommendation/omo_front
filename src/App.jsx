@@ -9,6 +9,11 @@ import AiCodiFeedback from './pages/ai/AiCodiFeedback'
 import MyPageEdit from './pages/mypage/MyPageEdit'
 import Closet from './pages/closet/Closet'
 import ClosetDetail from './pages/closet/ClosetDetail'
+import Sns from './pages/sns/Sns'
+import SnsDetail from './pages/sns/SnsDetail'
+import SnsProfile from './pages/sns/SnsProfile'
+import SnsItemDetail from './pages/sns/SnsItemDetail'
+import SnsItemInfo from './pages/sns/SnsItemInfo'
 import Login from './pages/Login'
 
 const App = () => {
@@ -31,6 +36,11 @@ const App = () => {
         <Route path="/mypage/edit" element={<MyPageEdit />} />
         <Route path="/closet" element={<Closet />} />
         <Route path="/closet/detail/:id" element={<ClosetDetail />} />
+        <Route path="/sns" element={<Sns />} />
+        <Route path="/sns/detail/:id" element={<SnsDetail />} />
+        <Route path="/sns/detail/:postId/:itemId" element={<SnsItemDetail />} />
+        <Route path="/sns/info/:postId/:itemId" element={<SnsItemInfo />} />
+        <Route path="/sns/profile/:userId" element={<SnsProfile />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>

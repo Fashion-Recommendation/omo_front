@@ -658,6 +658,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .login-content {
@@ -731,6 +736,275 @@
   line-height: 22.5px;
 }
 
+/* SNS 페이지 스타일 */
+.sns-page__content {
+  flex: 1;
+  padding: 110px 0 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sns-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  gap: 12px;
+}
+
+.sns-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sns-user__avatar {
+  width: 38px;
+  height: 38px;
+  background: #000;
+  border-radius: 50%;
+}
+
+.sns-user__name {
+  font-size: 18px;
+  font-weight: 500;
+  color: #000;
+}
+
+.sns-create-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sns-create-icon {
+  font-size: 18px;
+  font-weight: 300;
+}
+
+.sns-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.sns-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: 20px;
+}
+
+.sns-empty p {
+  font-size: 16px;
+  color: #8e8e93;
+}
+
+.sns-card {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.sns-card:hover {
+  opacity: 0.9;
+}
+
+.sns-card__images {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  width: 100%;
+}
+
+.sns-card__image {
+  width: 100%;
+  aspect-ratio: 1;
+  background-size: cover;
+  background-position: center;
+  background-color: linear-gradient(135deg, #d8c9bb, #b39b85);
+}
+
+/* SNS Detail 페이지 스타일 */
+.sns-detail__content {
+  flex: 1;
+  padding: 110px 20px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sns-detail__user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sns-detail__avatar {
+  width: 38px;
+  height: 38px;
+  background: #000;
+  border-radius: 50%;
+}
+
+.sns-detail__username {
+  font-size: 18px;
+  font-weight: 500;
+  color: #000;
+}
+
+.sns-detail__main-image {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.sns-detail__main-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.sns-detail__likes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sns-detail__like-button {
+  font-size: 24px;
+  color: #000;
+  cursor: pointer;
+}
+
+.sns-detail__like-count {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+}
+
+.sns-detail__date {
+  font-size: 14px;
+  color: #8e8e93;
+  text-align: right;
+}
+
+.sns-detail__description {
+  padding: 16px;
+  background: #fff;
+  border-top: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.sns-detail__description p {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.sns-detail__clothing {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sns-detail__clothing-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: #000;
+}
+
+.sns-detail__clothing-items {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+}
+
+.sns-detail__clothing-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.sns-detail__clothing-image {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #d8c9bb, #b39b85);
+}
+
+.sns-detail__clothing-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sns-detail__badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sns-detail__badge img {
+  width: 100%;
+  height: 100%;
+}
+
+.sns-detail__clothing-name {
+  font-size: 10px;
+  font-weight: 500;
+  color: #000;
+  text-align: center;
+  margin: 0;
+}
+
+.sns-detail__footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-top: 1px solid #d9d9d9;
+}
+
+.sns-detail__footer-avatar {
+  width: 38px;
+  height: 38px;
+  background: #000;
+  border-radius: 50%;
+}
+
+.sns-detail__footer-username {
+  font-size: 18px;
+  font-weight: 500;
+  color: #000;
+}
+
+.sns-detail__posted-time {
+  margin-left: auto;
+  font-size: 14px;
+  color: #8e8e93;
+}
+
 @media (min-width: 768px) {
   .ai-codi-page__content {
     padding: 120px 40px 120px;
@@ -747,4 +1021,431 @@
   .closet-detail__content {
     padding: 120px 40px 120px;
   }
+
+  .sns-page__content {
+    padding: 120px 0 120px;
+  }
+
+  .sns-detail__content {
+    padding: 120px 40px 120px;
+  }
+
+  .sns-profile__content {
+    padding: 120px 40px 120px;
+  }
+}
+
+/* SNS Profile Page */
+.sns-profile__content {
+  flex: 1;
+  padding: 70px 0 100px;
+  background: #fff;
+  width: 100%;
+}
+
+.sns-profile__header {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 20px;
+}
+
+.sns-profile__avatar {
+  width: 86px;
+  height: 86px;
+  background: #000;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sns-profile__stats {
+  display: flex;
+  gap: 24px;
+  flex: 1;
+}
+
+.sns-profile__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.sns-profile__stat-number {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+}
+
+.sns-profile__stat-label {
+  font-size: 14px;
+  color: #8e8e93;
+}
+
+.sns-profile__info {
+  padding: 0 20px 20px;
+}
+
+.sns-profile__username {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+  margin: 0 0 8px;
+}
+
+.sns-profile__bio {
+  font-size: 14px;
+  color: #000;
+  margin: 0 0 16px;
+}
+
+.sns-profile__follow-button {
+  width: 100%;
+  height: 32px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sns-profile__tabs {
+  display: flex;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.sns-profile__tab {
+  flex: 1;
+  height: 44px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: #8e8e93;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sns-profile__tab.is-active {
+  color: #000;
+  border-bottom-color: #000;
+  font-weight: 700;
+}
+
+.sns-profile__feed-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+}
+
+.sns-profile__closet {
+  width: 100%;
+}
+
+.sns-profile__closet-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 20px;
+}
+
+.sns-profile__closet-private {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: 20px;
+}
+
+.sns-profile__closet-private p {
+  font-size: 16px;
+  color: #8e8e93;
+}
+
+/* Profile Feed Card */
+.profile-feed-card {
+  width: 100%;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.profile-feed-card:hover {
+  transform: scale(0.98);
+}
+
+.profile-feed-card__images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.profile-feed-card__image {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+}
+
+/* SNS Item Detail Page (판매중) */
+.sns-item-detail__content {
+  flex: 1;
+  padding: 70px 0 100px;
+  background: #fff;
+  width: 100%;
+}
+
+.sns-item-detail__user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+.sns-item-detail__avatar {
+  width: 38px;
+  height: 38px;
+  background: #000;
+  border-radius: 50%;
+}
+
+.sns-item-detail__username {
+  font-size: 18px;
+  font-weight: 500;
+  color: #000;
+}
+
+.sns-item-detail__main-image {
+  width: 100%;
+  height: 428px;
+  overflow: hidden;
+}
+
+.sns-item-detail__main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sns-item-detail__title-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+}
+
+.sns-item-detail__logo {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.sns-item-detail__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+  margin: 0;
+}
+
+.sns-item-detail__details {
+  margin: 16px 20px;
+  background: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.sns-item-detail__detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid #ececec;
+}
+
+.sns-item-detail__detail-row:last-child {
+  border-bottom: none;
+}
+
+.sns-item-detail__detail-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+}
+
+.sns-item-detail__detail-value {
+  font-size: 14px;
+  color: #333;
+}
+
+.sns-item-detail__recommendations {
+  padding: 16px 20px;
+}
+
+.sns-item-detail__recommendations-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+  margin: 0 0 16px;
+}
+
+.sns-item-detail__recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.sns-item-detail__recommendation-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sns-item-detail__recommendation-item img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.sns-item-detail__recommendation-item p {
+  font-size: 10px;
+  font-weight: 500;
+  color: #000;
+  text-align: center;
+  margin: 0;
+}
+
+.sns-item-detail__purchase-button {
+  width: calc(100% - 40px);
+  height: 68px;
+  margin: 20px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 0;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+}
+
+/* SNS Item Info Page (비판매) */
+.sns-item-info__content {
+  flex: 1;
+  padding: 70px 0 100px;
+  background: #fff;
+  width: 100%;
+}
+
+.sns-item-info__user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+.sns-item-info__avatar {
+  width: 38px;
+  height: 38px;
+  background: #000;
+  border-radius: 50%;
+}
+
+.sns-item-info__username {
+  font-size: 18px;
+  font-weight: 500;
+  color: #000;
+}
+
+.sns-item-info__main-image {
+  width: 100%;
+  height: 428px;
+  overflow: hidden;
+}
+
+.sns-item-info__main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sns-item-info__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+  margin: 0;
+  padding: 16px 20px;
+}
+
+.sns-item-info__details {
+  margin: 16px 20px;
+  background: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.sns-item-info__detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid #ececec;
+}
+
+.sns-item-info__detail-row:last-child {
+  border-bottom: none;
+}
+
+.sns-item-info__detail-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+}
+
+.sns-item-info__detail-value {
+  font-size: 14px;
+  color: #333;
+}
+
+.sns-item-info__recommendations {
+  padding: 16px 20px;
+}
+
+.sns-item-info__recommendations-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+  margin: 0 0 16px;
+}
+
+.sns-item-info__recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.sns-item-info__recommendation-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sns-item-info__recommendation-item img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.sns-item-info__recommendation-item p {
+  font-size: 10px;
+  font-weight: 500;
+  color: #000;
+  text-align: center;
+  margin: 0;
 }

@@ -11,7 +11,7 @@ const ProfileIcon = () => (
   </svg>
 )
 
-const TopBar = ({ onBack, onProfile, title = 'AI 코디 추천' }) => {
+const TopBar = ({ onBack, onProfile, title }) => {
   return (
     <header className="topbar">
       <div className="topbar__status-row">
@@ -31,7 +31,7 @@ const TopBar = ({ onBack, onProfile, title = 'AI 코디 추천' }) => {
         </button>
       </div>
 
-      <div className="topbar__title-row">{title}</div>
+      {title && <div className="topbar__title-row">{title}</div>}
     </header>
   )
 }

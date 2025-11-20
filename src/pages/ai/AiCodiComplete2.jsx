@@ -1,6 +1,6 @@
-import TopBar from '../components/TopBar'
-import BottomNav from '../components/BottomNav'
-import useCodiStore from '../store/useCodiStore'
+import TopBar from '../../components/TopBar'
+import BottomNav from '../../components/BottomNav'
+import useCodiStore from '../../store/useCodiStore'
 
 /** AI 코디 추천 결과 (타입 2) */
 const AiCodiComplete2 = () => {

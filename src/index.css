@@ -14,9 +14,5 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: #121212;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 24px 0;
+  background: #fff;
 }

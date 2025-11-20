@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
-import TopBar from '../components/TopBar'
-import BottomNav from '../components/BottomNav'
-import useCodiStore from '../store/useCodiStore'
+import TopBar from '../../components/TopBar'
+import BottomNav from '../../components/BottomNav'
+import useCodiStore from '../../store/useCodiStore'
 
 /** AI 옷 기준 추천 페이지 */
 const AiCodiRecommendation = () => {

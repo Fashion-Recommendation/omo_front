@@ -1,6 +1,6 @@
-import TopBar from '../components/TopBar'
-import BottomNav from '../components/BottomNav'
-import useCodiStore from '../store/useCodiStore'
+import TopBar from '../../components/TopBar'
+import BottomNav from '../../components/BottomNav'
+import useCodiStore from '../../store/useCodiStore'
 
 const AiCodiComplete = () => {
   const {

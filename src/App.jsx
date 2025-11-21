@@ -14,6 +14,9 @@ import SnsDetail from './pages/sns/SnsDetail'
 import SnsProfile from './pages/sns/SnsProfile'
 import SnsItemDetail from './pages/sns/SnsItemDetail'
 import SnsItemInfo from './pages/sns/SnsItemInfo'
+import Shop from './pages/shop/Shop'
+import ShopDetail from './pages/shop/ShopDetail'
+import ShopSell from './pages/shop/ShopSell'
 import Login from './pages/Login'
 
 const App = () => {
@@ -41,6 +44,9 @@ const App = () => {
         <Route path="/sns/detail/:postId/:itemId" element={<SnsItemDetail />} />
         <Route path="/sns/info/:postId/:itemId" element={<SnsItemInfo />} />
         <Route path="/sns/profile/:userId" element={<SnsProfile />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/shop/detail/:id" element={<ShopDetail />} />
+        <Route path="/shop/sell" element={<ShopSell />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>

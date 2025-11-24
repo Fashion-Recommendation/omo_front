@@ -1,70 +1,90 @@
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import TopBar from '../../components/TopBar'
 import BottomNav from '../../components/BottomNav'
 import useCodiStore from '../../store/useCodiStore'
 
-/** AI 코디 피드백 페이지 */
 const AiCodiFeedback = () => {
+  const navigate = useNavigate()
   const {
+    selectedOutfit,
     selectedSituation,
     season,
     temperature,
     selectedActivity,
-    featuredOutfit,
+    evaluateOutfit,
+    isLoading
   } = useCodiStore()
 
-  const handleBack = () => {
-    console.log('뒤로가기 예정: 이전 페이지로 이동')
+  const handleBack = () => navigate(-1)
+
+  const handleGetFeedback = async () => {
+    await evaluateOutfit(selectedOutfit)
+    navigate('/ai/feedback2')
   }
 
-  const handleProfile = () => {
-    console.log('프로필 페이지로 이동 예정')
-  }
-
-  const handleFeedback = () => {
-    console.log('AI 피드백 API 호출 예정')
-  }
-
-  const summaryItems = [
-    { label: '상황', value: selectedSituation },
-    { label: '계절', value: season },
-    { label: '온도', value: `${temperature}℃` },
-    { label: '활동', value: selectedActivity },
-  ]
+  const outfitItems = selectedOutfit?.items || []
 
   return (
-    <div className="page ai-codi-feedback-page">
-      <TopBar onBack={handleBack} onProfile={handleProfile} />
+    <div className="page">
+      <TopBar onBack={handleBack} />
 
-      <main className="ai-codi-feedback-page__content">
-        <section className="card">
-          <h2>오늘의 코디</h2>
-          <dl className="summary-list">
-            {summaryItems.map((item) => (
-              <div className="summary-list__row" key={item.label}>
-                <dt>{item.label}</dt>
-                <dd>{item.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+      <div className="page-header">
+        <h1 className="page-header__title">오늘의 코디 신청</h1>
+      </div>
 
-        <section className="card">
-          <h2>이렇게 입을래요!</h2>
-          <article className="feedback-hero">
-            {featuredOutfit.imageUrl ? (
-              <img src={featuredOutfit.imageUrl} alt={featuredOutfit.title} />
-            ) : (
-              <div className="feedback-hero__placeholder" aria-hidden="true" />
-            )}
-            <div className="feedback-hero__body">
-              <h3>{featuredOutfit.title}</h3>
-              <p>{featuredOutfit.description}</p>
+      <main className="page__content">
+        {/* 오늘의 코디 정보 */}
+        <section className="section">
+          <h2 className="section__title">오늘의 코디</h2>
+          <div className="info-list">
+            <div className="info-list__row">
+              <span className="info-list__label">상황</span>
+              <span className="info-list__value">{selectedSituation || '소개팅'}</span>
             </div>
-          </article>
+            <div className="info-list__row">
+              <span className="info-list__label">계절</span>
+              <span className="info-list__value">{season || '겨울'}</span>
+            </div>
+            <div className="info-list__row">
+              <span className="info-list__label">온도</span>
+              <span className="info-list__value">{temperature || '14도'}</span>
+            </div>
+            <div className="info-list__row">
+              <span className="info-list__label">활동</span>
+              <span className="info-list__value">{selectedActivity === '실외 활동' ? '실외' : '실내'}</span>
+            </div>
+          </div>
         </section>
 
-        <button type="button" className="primary-button primary-button--full" onClick={handleFeedback}>
-          AI 코디 피드백 받기
+        {/* 이렇게 입을래요 */}
+        <section className="section">
+          <h2 className="section__title">이렇게 입을래요 !</h2>
+          <div className="feedback-outfit-card">
+            <div className="feedback-outfit-card__images">
+              {outfitItems.slice(0, 4).map((item, idx) => (
+                <div
+                  key={idx}
+                  className="feedback-outfit-card__thumb"
+                  style={{
+                    backgroundImage: item?.image_url ? `url(${item.image_url})` : undefined,
+                  }}
+                />
+              ))}
+            </div>
+            <p className="feedback-outfit-card__description">
+              {selectedOutfit?.description || '브라운 목폴라 니트 + 딥블루 파자마 팬츠 + 블랙 크록스'}
+            </p>
+          </div>
+        </section>
+
+        {/* 피드백 받기 버튼 */}
+        <button
+          className="cta-button"
+          onClick={handleGetFeedback}
+          disabled={isLoading}
+        >
+          {isLoading ? '분석 중...' : 'AI 코디 피드백 받기'}
         </button>
       </main>
 
@@ -74,4 +94,3 @@ const AiCodiFeedback = () => {
 }
 
 export default AiCodiFeedback
-

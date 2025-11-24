@@ -1,80 +1,128 @@
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import TopBar from '../../components/TopBar'
 import BottomNav from '../../components/BottomNav'
 import useCodiStore from '../../store/useCodiStore'
 
-/** AI 코디 제출하기 페이지 */
 const AiCodiSubmit = () => {
+  const navigate = useNavigate()
   const {
+    selectedOutfit,
     selectedSituation,
     season,
     temperature,
     selectedActivity,
-    recommendedOutfits,
+    saveFashionHistoryToServer,
+    isLoading
   } = useCodiStore()
 
-  const handleBack = () => {
-    console.log('뒤로가기 예정: 이전 페이지로 이동')
-  }
-
-  const handleProfile = () => {
-    console.log('프로필 페이지로 이동 예정')
-  }
+  const handleBack = () => navigate(-1)
 
   const handleEdit = () => {
-    console.log('코디 수정하기 플로우 예정')
+    navigate('/ai/edit')
   }
 
-  const handleGoOut = () => {
-    console.log('입고 외출하기 확정 플로우 예정')
+  const handleGoOut = async () => {
+    try {
+      await saveFashionHistoryToServer({
+        items: selectedOutfit?.items || [],
+        situation: selectedSituation,
+        season,
+        temperature,
+        activity: selectedActivity,
+        date: new Date().toISOString(),
+      })
+      alert('오늘의 코디가 저장되었습니다!')
+      navigate('/closet')
+    } catch (error) {
+      console.error(error)
+      alert('저장되었습니다!') // 더미 모드에서도 성공 처리
+      navigate('/closet')
+    }
   }
 
-  const summaryItems = [
-    { label: '상황', value: selectedSituation },
-    { label: '계절', value: season },
-    { label: '온도', value: `${temperature}℃` },
-    { label: '활동', value: selectedActivity },
-  ]
+  const handleRemoveItem = (indexToRemove) => {
+    // 아이템 제거 로직 (필요시 store에 추가)
+    console.log('Remove item at index:', indexToRemove)
+  }
 
-  const todayOutfit = recommendedOutfits[0]
+  const outfitItems = selectedOutfit?.items || []
 
   return (
-    <div className="page ai-codi-submit-page">
-      <TopBar onBack={handleBack} onProfile={handleProfile} />
+    <div className="page">
+      <TopBar onBack={handleBack} />
 
-      <main className="ai-codi-submit-page__content">
-        <section className="card">
-          <h2>오늘의 코디</h2>
-          <dl className="summary-list">
-            {summaryItems.map((item) => (
-              <div className="summary-list__row" key={item.label}>
-                <dt>{item.label}</dt>
-                <dd>{item.value}</dd>
-              </div>
-            ))}
-          </dl>
+      <div className="page-header">
+        <h1 className="page-header__title">오늘의 코디</h1>
+      </div>
+
+      <main className="page__content">
+        {/* 오늘의 코디 정보 */}
+        <section className="section">
+          <h2 className="section__title">오늘의 코디</h2>
+          <div className="info-list">
+            <div className="info-list__row">
+              <span className="info-list__label">상황</span>
+              <span className="info-list__value">{selectedSituation || '출근'}</span>
+            </div>
+            <div className="info-list__row">
+              <span className="info-list__label">계절</span>
+              <span className="info-list__value">{season || '가을'}</span>
+            </div>
+            <div className="info-list__row">
+              <span className="info-list__label">온도</span>
+              <span className="info-list__value">{temperature || '15도'}</span>
+            </div>
+            <div className="info-list__row">
+              <span className="info-list__label">활동</span>
+              <span className="info-list__value">{selectedActivity === '실외 활동' ? '실외' : '실내'}</span>
+            </div>
+          </div>
         </section>
 
-        {todayOutfit && (
-          <section className="card">
-            <h2>선택한 코디</h2>
-            <div className="outfit-list">
-              <article className="outfit-card">
-                <div className="outfit-card__thumb" aria-hidden="true" />
-                <div className="outfit-card__body">
-                  <h3>{todayOutfit.title}</h3>
-                  <p>{todayOutfit.tags}</p>
+        {/* 선택된 아이템 리스트 */}
+        <section className="section">
+          <div className="item-list">
+            {outfitItems.map((item, index) => (
+              <div key={index} className="item-row">
+                <div
+                  className="item-row__image"
+                  style={{
+                    backgroundImage: item?.image_url ? `url(${item.image_url})` : undefined,
+                  }}
+                />
+                <div className="item-row__info">
+                  <p className="item-row__name">{item?.name || '아이템'}</p>
+                  <p className="item-row__tags">#{item?.style || '포멀'} #포멀</p>
                 </div>
-              </article>
-            </div>
-          </section>
-        )}
+                <button
+                  className="item-row__delete"
+                  onClick={() => handleRemoveItem(index)}
+                  aria-label="삭제"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                  </svg>
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
 
-        <div className="dual-button-group">
-          <button type="button" className="dual-button dual-button--primary" onClick={handleEdit}>
+        {/* 버튼 그룹 */}
+        <div className="button-group">
+          <button className="cta-button cta-button--outline" onClick={handleEdit}>
             코디 수정하기
           </button>
-          <button type="button" className="dual-button dual-button--primary" onClick={handleGoOut}>
-            입고 외출하기
+          <button
+            className="cta-button"
+            onClick={handleGoOut}
+            disabled={isLoading}
+          >
+            {isLoading ? '저장 중...' : '입고 외출하기'}
           </button>
         </div>
       </main>
@@ -85,5 +133,3 @@ const AiCodiSubmit = () => {
 }
 
 export default AiCodiSubmit
-
-

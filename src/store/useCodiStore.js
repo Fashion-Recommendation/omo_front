@@ -80,11 +80,14 @@ const useCodiStore = create((set, get) => ({
   temperature: '15',
 
   // 기준 옷 (사용자가 선택한 옷)
-  baseClothing: DUMMY_BASE_CLOTHING,
+  baseClothing: null,
 
   // AI 추천 결과
   recommendedOutfit: null,
   tpoResult: null,
+
+  // 선택된 코디 (AiCodiRecommend2 → AiCodiSubmit 전달용)
+  selectedOutfit: null,
 
   // 피드백 결과
   feedbackResult: null,
@@ -168,6 +171,22 @@ const useCodiStore = create((set, get) => ({
     }
   },
 
+  // 코디 히스토리 저장
+  saveFashionHistoryToServer: async (outfitData) => {
+    set({ isLoading: true, error: null })
+    try {
+      // API 연결시 실제 저장 로직
+      console.log('코디 저장:', outfitData)
+      // await memberApi.saveFashionHistory(outfitData)
+      return { success: true }
+    } catch (error) {
+      console.warn('저장 실패:', error.message)
+      return { success: true } // 더미 모드에서도 성공 처리
+    } finally {
+      set({ isLoading: false })
+    }
+  },
+
   // ========== Local Actions ==========
   setSelectedSituation: (value) => set({ selectedSituation: value }),
   setSelectedActivity: (value) => set({ selectedActivity: value }),
@@ -175,6 +194,7 @@ const useCodiStore = create((set, get) => ({
   setTemperature: (value) => set({ temperature: value }),
   setBaseClothing: (clothing) => set({ baseClothing: clothing }),
   setRecommendedOutfit: (outfit) => set({ recommendedOutfit: outfit }),
+  setSelectedOutfit: (outfit) => set({ selectedOutfit: outfit }),
   clearError: () => set({ error: null }),
 
   // 추천 결과 초기화
@@ -190,6 +210,7 @@ const useCodiStore = create((set, get) => ({
     set({
       baseClothing: null,
       recommendedOutfit: null,
+      selectedOutfit: null,
       tpoResult: null,
       feedbackResult: null,
       selectedSituation: '출근',

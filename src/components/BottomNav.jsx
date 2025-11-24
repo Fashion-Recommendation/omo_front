@@ -62,7 +62,7 @@ const ProfileIcon = () => (
 
 const navItems = [
   { label: '옷장', icon: ClosetIcon, path: '/closet' },
-  { label: '코디추천', icon: RecommendIcon, path: '/ai/AiCodiRecommendation' },
+  { label: '코디추천', icon: RecommendIcon, path: '/ai/recommend' },
   { label: 'SNS', icon: CameraIcon, path: '/sns' },
   { label: '77샵', icon: ShopIcon, path: '/shop' },
   { label: '프로필', icon: ProfileIcon, path: '/mypage' },
@@ -81,7 +81,7 @@ const BottomNav = () => {
 
   const isActive = (path) => {
     if (path === '/closet') return location.pathname.startsWith('/closet')
-    if (path === '/ai/AiCodiRecommendation') return location.pathname.startsWith('/ai')
+    if (path === '/ai/recommend') return location.pathname.startsWith('/ai')
     if (path === '/sns') return location.pathname.startsWith('/sns')
     if (path === '/mypage') return location.pathname.startsWith('/mypage')
     return location.pathname === path

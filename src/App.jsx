@@ -1,11 +1,12 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import './App.css'
-import AiCodiRecommendation from './pages/ai/AiCodiRecommendation'
-import AiCodiComplete from './pages/ai/AiCodiComplete'
-import AiCodiComplete2 from './pages/ai/AiCodiComplete2'
+import AiCodiRecommend from './pages/ai/AiCodiRecommend'
+import AiCodiRecommend2 from './pages/ai/AiCodiRecommend2'
 import AiCodiSubmit from './pages/ai/AiCodiSubmit'
+import AiCodiEdit from './pages/ai/AiCodiEdit'
 import AiCodiFeedback from './pages/ai/AiCodiFeedback'
+import AiCodiFeedback2 from './pages/ai/AiCodiFeedback2'
 import MyPage from './pages/mypage/MyPage'
 import MyPageEdit from './pages/mypage/MyPageEdit'
 import Closet from './pages/closet/Closet'
@@ -22,34 +23,41 @@ import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 
 const App = () => {
-  const aiPages = [
-    { path: 'AiCodiRecommendation', element: <AiCodiRecommendation /> },
-    { path: 'AiCodiComplete', element: <AiCodiComplete /> },
-    { path: 'AiCodiComplete2', element: <AiCodiComplete2 /> },
-    { path: 'AiCodiSubmit', element: <AiCodiSubmit /> },
-    { path: 'AiCodiFeedback', element: <AiCodiFeedback /> },
-  ]
-
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
-        {aiPages.map(({ path, element }) => (
-          <Route key={path} path={`/ai/${path}`} element={element} />
-        ))}
+
+        {/* AI 코디 추천 플로우 */}
+        <Route path="/ai/recommend" element={<AiCodiRecommend />} />
+        <Route path="/ai/recommend2" element={<AiCodiRecommend2 />} />
+        <Route path="/ai/submit" element={<AiCodiSubmit />} />
+        <Route path="/ai/edit" element={<AiCodiEdit />} />
+        <Route path="/ai/feedback" element={<AiCodiFeedback />} />
+        <Route path="/ai/feedback2" element={<AiCodiFeedback2 />} />
+
+        {/* 마이페이지 */}
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/mypage/edit" element={<MyPageEdit />} />
+
+        {/* 옷장 */}
         <Route path="/closet" element={<Closet />} />
         <Route path="/closet/detail/:id" element={<ClosetDetail />} />
+
+        {/* SNS */}
         <Route path="/sns" element={<Sns />} />
         <Route path="/sns/detail/:id" element={<SnsDetail />} />
         <Route path="/sns/detail/:postId/:itemId" element={<SnsItemDetail />} />
         <Route path="/sns/info/:postId/:itemId" element={<SnsItemInfo />} />
         <Route path="/sns/profile/:userId" element={<SnsProfile />} />
+
+        {/* 77샵 */}
         <Route path="/shop" element={<Shop />} />
         <Route path="/shop/detail/:id" element={<ShopDetail />} />
         <Route path="/shop/sell" element={<ShopSell />} />
+
+        {/* 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

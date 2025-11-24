@@ -488,6 +488,75 @@
   color: #555;
 }
 
+.info-input {
+  width: 120px;
+  padding: 8px 12px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: right;
+}
+
+.info-input:focus {
+  outline: none;
+  border-color: #111;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 28px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: #111;
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(22px);
+}
+
+/* MyPage 페이지 스타일 */
+.mypage__content {
+  flex: 1;
+  padding: 110px 20px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 /* MyPageCloset 페이지 스타일 */
 .closet-page__content {
   flex: 1;
@@ -2019,4 +2088,87 @@
 .shop-sell__button--submit {
   background: #ff0000;
   color: #fff;
+}
+
+/* 404 Not Found Page */
+.not-found {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #000 0%, #1a1a1a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.not-found__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.not-found__logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.not-found__title {
+  font-family: 'Inter', sans-serif;
+  font-size: 120px;
+  font-weight: 900;
+  color: #fff;
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -4px;
+  text-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+}
+
+.not-found__subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #8e8e93;
+  margin: 0;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.not-found__message {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 16px;
+  color: #666;
+  margin: 20px 0 0;
+}
+
+.not-found__button {
+  margin-top: 32px;
+  padding: 16px 48px;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 50px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.not-found__button:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
 }

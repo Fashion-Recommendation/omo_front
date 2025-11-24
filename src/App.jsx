@@ -6,6 +6,7 @@ import AiCodiComplete from './pages/ai/AiCodiComplete'
 import AiCodiComplete2 from './pages/ai/AiCodiComplete2'
 import AiCodiSubmit from './pages/ai/AiCodiSubmit'
 import AiCodiFeedback from './pages/ai/AiCodiFeedback'
+import MyPage from './pages/mypage/MyPage'
 import MyPageEdit from './pages/mypage/MyPageEdit'
 import Closet from './pages/closet/Closet'
 import ClosetDetail from './pages/closet/ClosetDetail'
@@ -18,6 +19,7 @@ import Shop from './pages/shop/Shop'
 import ShopDetail from './pages/shop/ShopDetail'
 import ShopSell from './pages/shop/ShopSell'
 import Login from './pages/Login'
+import NotFound from './pages/NotFound'
 
 const App = () => {
   const aiPages = [
@@ -36,6 +38,7 @@ const App = () => {
         {aiPages.map(({ path, element }) => (
           <Route key={path} path={`/ai/${path}`} element={element} />
         ))}
+        <Route path="/mypage" element={<MyPage />} />
         <Route path="/mypage/edit" element={<MyPageEdit />} />
         <Route path="/closet" element={<Closet />} />
         <Route path="/closet/detail/:id" element={<ClosetDetail />} />
@@ -47,7 +50,7 @@ const App = () => {
         <Route path="/shop" element={<Shop />} />
         <Route path="/shop/detail/:id" element={<ShopDetail />} />
         <Route path="/shop/sell" element={<ShopSell />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )

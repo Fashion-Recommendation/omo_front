@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TopBar from '../../components/TopBar'
 import BottomNav from '../../components/BottomNav'
 import useUserStore from '../../store/userStore'
+import useShopStore from '../../store/shopStore'
 
 // 더미 데이터
 const SHOP_PRODUCTS = [
@@ -53,39 +54,33 @@ const SHOP_PRODUCTS = [
 const Shop = () => {
   const navigate = useNavigate()
   const { currentUser } = useUserStore()
-  const [selectedCategory, setSelectedCategory] = useState('전체')
+  const { posts: products, isLoading, error, fetchAllPosts } = useShopStore()
+  const [selectedCategory, setSelectedCategory] = useState('전체');
 
-  const categories = ['전체', '상의', '하의', '아우터', '신발']
+  useEffect(() => {
+    fetchAllPosts();
+  }, [fetchAllPosts]);
 
-  const handleBack = () => {
-    window.history.back()
-  }
+  const filtered = useMemo(() => {
+    if (selectedCategory === '전체') return products;
+    return products.filter((p) => p.category === selectedCategory);
+  }, [products, selectedCategory]);
 
-  const handleProfile = () => {
-    navigate(`/sns/profile/${currentUser.userId}`)
-  }
+  const handleProductClick = (id) => navigate(`/shop/detail/${id}`);
 
-  const handleSellFromCloset = () => {
-    navigate('/shop/sell')
-  }
-
-  const handleProductClick = (productId) => {
-    navigate(`/shop/detail/${productId}`)
-  }
+    if (isLoading) return <div>로딩...</div>;
+    if (error) return <div>오류: {error}</div>;
 
   return (
     <div className="page">
-      <TopBar onBack={handleBack} onProfile={handleProfile} />
-
+      <TopBar onBack={() => navigate(-1)} onProfile={() => navigate(`/sns/profile/${currentUser.userId}`)} />
       <main className="shop-page__content">
-        {/* 77샵 로고 헤더 */}
         <div className="shop-header">
           <img src="/77-logo.png" alt="77샵" className="shop-header__logo" />
         </div>
 
-        {/* 카테고리 필터 */}
         <nav className="shop-categories">
-          {categories.map((category) => (
+          {['전체', 'top', 'bottom', 'outer', 'shoes'].map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
@@ -96,44 +91,36 @@ const Shop = () => {
           ))}
         </nav>
 
-        {/* 내 옷장에서 판매하기 버튼 */}
-        <button className="shop-sell-button" onClick={handleSellFromCloset}>
+        <button className="shop-sell-button" onClick={() => navigate('/shop/sell')}>
           <span className="shop-sell-button__icon">+</span>
           <span className="shop-sell-button__text">내 옷장에서 판매하기</span>
         </button>
 
-        {/* 상품 그리드 */}
         <section className="shop-products">
-          {SHOP_PRODUCTS.map((product) => (
-            <div
-              key={product.id}
-              className="shop-product"
-              onClick={() => handleProductClick(product.id)}
-            >
+          {filtered.map((product) => (
+            <div key={product.id} className="shop-product" onClick={() => handleProductClick(product.id)}>
               <div className="shop-product__image">
                 <img src={product.image} alt={product.name} />
               </div>
               <div className="shop-product__info">
                 <div className="shop-product__header">
                   <h3 className="shop-product__name">{product.name}</h3>
-                  <span className="shop-product__price">{product.price}</span>
+                  <span className="shop-product__price">
+                    {new Intl.NumberFormat('ko-KR').format(product.price)}원
+                  </span>
                 </div>
                 <div className="shop-product__tags">
-                  {product.tags.map((tag, index) => (
-                    <span key={index} className="shop-product__tag">
-                      {tag}
-                    </span>
-                  ))}
+                  <span className="shop-product__tag">#{product.style}</span>
+                  {product.season && <span className="shop-product__tag">#{product.season}</span>}
                 </div>
               </div>
             </div>
           ))}
         </section>
       </main>
-
       <BottomNav />
     </div>
-  )
-}
+  );
+  };
 
-export default Shop
+  export default Shop;

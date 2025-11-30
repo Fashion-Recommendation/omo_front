@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import TopBar from '../../components/TopBar'
 import BottomNav from '../../components/BottomNav'
 import SnsCard from './components/SnsCard'
 import useUserStore from '../../store/userStore'
+import useSnsStore from '../../store/snsStore'
 
 // 더미 데이터
 const SNS_POSTS = [
@@ -36,6 +37,9 @@ const SNS_POSTS = [
 const Sns = () => {
   const navigate = useNavigate()
   const { currentUser } = useUserStore()
+  const { posts, fetchSnsPosts, isLoading, error } = useSnsStore()
+
+  useEffect(() => {fetchSnsPosts(); }, []);
 
   const handleBack = () => {
     window.history.back()
@@ -72,12 +76,12 @@ const Sns = () => {
 
         {/* SNS 피드 그리드 */}
         <section className="sns-grid">
-          {SNS_POSTS.length > 0 ? (
-            SNS_POSTS.map((post) => <SnsCard key={post.id} post={post} />)
-          ) : (
-            <div className="sns-empty">
-              <p>아직 게시물이 없습니다</p>
-            </div>
+          {isLoading && <div>로딩...</div>}
+          {error && <div>오류: {error}</div>}
+          {!isLoading && !error && (
+            posts.length
+              ? posts.map((post) => <SnsCard key={post.id} post={post} />)
+              : <div className="sns-empty"><p>아직 게시물이 없습니다</p></div>
           )}
         </section>
       </main>

@@ -85,7 +85,7 @@ const MyPageEdit = () => {
             }}
           />
           <div className="profile-info">
-            <h2 className="profile-username">{currentUser?.name || '사용자'}님의 정보 수정</h2>
+            <h2 className="profile-username">{currentUser?.username || '사용자'}님의 정보 수정</h2>
           </div>
         </div>
 
@@ -95,7 +95,7 @@ const MyPageEdit = () => {
           <section className="info-section" aria-label="개인 정보">
             <div className="info-row">
               <span className="info-label">이름</span>
-              <span className="info-value">{currentUser?.name || '-'}</span>
+              <span className="info-value">{currentUser?.username || '-'}</span>
             </div>
             <div className="info-row">
               <span className="info-label">이메일</span>

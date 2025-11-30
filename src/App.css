@@ -860,9 +860,9 @@
 }
 
 .sns-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 한 줄에 2개 */
+  gap: 12px;
 }
 
 .sns-empty {
@@ -1206,11 +1206,11 @@
 
 .sns-profile__feed-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개 */
+  gap: 12px; /* 필요하면 간격 조정 */
   padding: 20px;
-  width: 100%;
 }
+
 
 .sns-profile__closet {
   width: 100%;

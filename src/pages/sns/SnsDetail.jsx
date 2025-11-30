@@ -1,8 +1,10 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import TopBar from '../../components/TopBar'
 import BottomNav from '../../components/BottomNav'
 import useUserStore from '../../store/userStore'
+import useSnsStore from '../../store/snsStore'
+
 
 // 더미 데이터
 const SNS_DETAIL_DATA = {
@@ -38,99 +40,114 @@ const SNS_DETAIL_DATA = {
   },
 }
 
-const SnsDetail = () => {
-  const { id } = useParams()
-  const navigate = useNavigate()
-  const { currentUser } = useUserStore()
-  const post = SNS_DETAIL_DATA[id] || SNS_DETAIL_DATA[1]
+  const SnsDetail = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { currentUser } = useUserStore();
+    const { postDetail, detailLoading, detailError, fetchPostDetail } = useSnsStore();
 
-  const handleBack = () => {
-    window.history.back()
-  }
+    useEffect(() => {
+      fetchPostDetail(id);
+    }, [id, fetchPostDetail]);
 
-  const handleProfile = () => {
-    navigate(`/sns/profile/${currentUser.userId}`)
-  }
+    const handleBack = () => window.history.back();
+    const handleProfile = () => navigate(`/sns/profile/${currentUser?.id ?? currentUser?.userId ?? ''}`);
+    const handleLike = () => console.log('좋아요');
+    const handleUserClick = () => navigate(`/sns/profile/${postDetail?.member?.id ?? ''}`);
+    const handleItemClick = (item) => {
+      const payload = { item, member: postDetail.member };
+      if (item.isOnSale) navigate(`/sns/detail/${id}/${item.id}`, { state: payload });
+      else navigate(`/sns/info/${id}/${item.id}`, { state: payload });
+    };
 
-  const handleLike = () => {
-    console.log('좋아요')
-  }
 
-  const handleUserClick = () => {
-    navigate(`/sns/profile/${post.username}`)
-  }
-
-  const handleItemClick = (item) => {
-    if (item.isForSale) {
-      navigate(`/sns/detail/${id}/${item.id}`)
-    } else {
-      navigate(`/sns/info/${id}/${item.id}`)
+    if (detailLoading) {
+      return (
+        <div className="page">
+          <TopBar onBack={handleBack} onProfile={handleProfile} />
+          <main className="sns-detail__content"><p>로딩...</p></main>
+          <BottomNav />
+        </div>
+      );
     }
-  }
 
-  return (
-    <div className="page">
-      <TopBar onBack={handleBack} onProfile={handleProfile} />
-
-      <main className="sns-detail__content">
-        {/* 사용자 정보 */}
-        <div className="sns-detail__user" onClick={handleUserClick} style={{ cursor: 'pointer' }}>
-          <div className="sns-detail__avatar" />
-          <span className="sns-detail__username">{post.username}</span>
+    if (detailError || !postDetail) {
+      return (
+        <div className="page">
+          <TopBar onBack={handleBack} onProfile={handleProfile} />
+          <main className="sns-detail__content"><p>오류: {detailError || '데이터 없음'}</p></main>
+          <BottomNav />
         </div>
+      );
+    }
 
-        {/* 메인 이미지 */}
-        <div className="sns-detail__main-image">
-          <img src={post.mainImage} alt="게시물 이미지" />
-        </div>
+    return (
+      <div className="page">
+        <TopBar onBack={handleBack} onProfile={handleProfile} />
 
-        {/* 좋아요 */}
-        <div className="sns-detail__likes">
-          <button className="sns-detail__like-button" onClick={handleLike}>
-            ♥
-          </button>
-          <span className="sns-detail__like-count">{post.likes}</span>
-        </div>
-
-        {/* 날짜 */}
-        <div className="sns-detail__date">{post.date}</div>
-
-        {/* 설명 */}
-        <div className="sns-detail__description">
-          <p>{post.description}</p>
-        </div>
-
-        {/* 착용 의류 정보 */}
-        <section className="sns-detail__clothing">
-          <h2 className="sns-detail__clothing-title">착용 의류 정보</h2>
-
-          <div className="sns-detail__clothing-items">
-            {post.clothingItems.map((item) => (
-              <div
-                key={item.id}
-                className="sns-detail__clothing-item"
-                onClick={() => handleItemClick(item)}
-                style={{ cursor: 'pointer' }}
-              >
-                <div className="sns-detail__clothing-image">
-                  <img src={item.image} alt={item.name} />
-                  {item.isForSale && (
-                    <div className="sns-detail__badge">
-                      <img src="/77-logo.png" alt="77샵" />
-                    </div>
-                  )}
-                </div>
-                <p className="sns-detail__clothing-name">{item.name}</p>
-              </div>
-            ))}
+        <main className="sns-detail__content">
+          {/* 사용자 정보 */}
+          <div className="sns-detail__user" onClick={handleUserClick} style={{ cursor: 'pointer' }}>
+            <div
+              className="sns-detail__avatar"
+              style={{
+                backgroundImage: `url(${postDetail.member?.profileImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+            <span className="sns-detail__username">{postDetail.member?.username}</span>
           </div>
 
-        </section>
-      </main>
+          {/* 메인 이미지 */}
+          <div className="sns-detail__main-image">
+            <img src={postDetail.image} alt="게시물 이미지" />
+          </div>
 
-      <BottomNav />
-    </div>
-  )
-}
+          {/* 좋아요 */}
+          <div className="sns-detail__likes">
+            <button className="sns-detail__like-button" onClick={handleLike}>❤</button>
+            <span className="sns-detail__like-count">{postDetail.likeCnt}</span>
+          </div>
+
+          {/* 날짜 */}
+          <div className="sns-detail__date">{postDetail.createdAt}</div>
+
+          {/* 설명 */}
+          <div className="sns-detail__description">
+            <p>{postDetail.content}</p>
+          </div>
+
+          {/* 착용 의류 정보 */}
+          <section className="sns-detail__clothing">
+            <h2 className="sns-detail__clothing-title">착용 의류 정보</h2>
+
+            <div className="sns-detail__clothing-items">
+              {postDetail.items.map((item) => (
+                <div
+                  key={item.id}
+                  className="sns-detail__clothing-item"
+                  onClick={() => handleItemClick(item)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div className="sns-detail__clothing-image">
+                    <img src={item.image} alt={item.name} />
+                    {item.isOnSale && (
+                      <div className="sns-detail__badge">
+                        <img src="/77-logo.png" alt="77샵" />
+                      </div>
+                    )}
+                  </div>
+                  <p className="sns-detail__clothing-name">{item.name}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </main>
+
+        <BottomNav />
+      </div>
+    );
+  };
 
 export default SnsDetail

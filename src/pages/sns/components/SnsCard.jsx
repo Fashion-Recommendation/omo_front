@@ -13,11 +13,7 @@ const SnsCard = ({ post }) => {
       <div className="sns-card__images">
         <div
           className="sns-card__image"
-          style={{ backgroundImage: `url(${post.leftImage})` }}
-        />
-        <div
-          className="sns-card__image"
-          style={{ backgroundImage: `url(${post.rightImage})` }}
+          style={{ backgroundImage: `url(${post.Image})` }}
         />
       </div>
     </article>

@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import TopBar from '../../components/TopBar'
 import BottomNav from '../../components/BottomNav'
 import useUserStore from '../../store/userStore'
+import useShopStore from '../../store/shopStore'
 
 // 더미 데이터
 const SHOP_DETAIL_DATA = {
@@ -35,8 +36,12 @@ const ShopDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const { currentUser } = useUserStore()
-  const product = SHOP_DETAIL_DATA[id] || SHOP_DETAIL_DATA[1]
+  const { selectedPost: product, detailLoading, detailError, fetchPostDetail } = useShopStore()
 
+  useEffect(() => {
+    fetchPostDetail(id);
+  }, [id, fetchPostDetail]);
+  
   const handleBack = () => {
     window.history.back()
   }
@@ -53,6 +58,17 @@ const ShopDetail = () => {
     navigate(`/sns/profile/${product.username}`)
   }
 
+  if (detailLoading || !product) return <div>로딩 중...</div>;
+  if (detailError) return <div>오류: {detailError}</div>;
+
+  const detailRows = [
+    { label: '카테고리', value: product.category },
+    { label: '컬러', value: product.color },
+    { label: '스타일', value: product.style },
+    { label: '계절', value: product.season },
+    { label: '사이즈', value: product.size },
+  ].filter(row => row.value);
+
   return (
     <div className="page">
       <TopBar onBack={handleBack} onProfile={handleProfile} />
@@ -65,16 +81,16 @@ const ShopDetail = () => {
 
         {/* 메인 이미지 */}
         <div className="shop-detail__main-image">
-          <img src={product.mainImage} alt={product.name} />
+          <img src={product.image} alt={product.name} />
         </div>
 
         {/* 사용자 정보 */}
         <div className="shop-detail__user-section">
           <div className="shop-detail__user" onClick={handleUserClick} style={{ cursor: 'pointer' }}>
             <div className="shop-detail__avatar" />
-            <span className="shop-detail__username">{product.username}</span>
+            <span className="shop-detail__username">{product.seller.username}</span>
           </div>
-          <time className="shop-detail__posted-time">{product.postedTime}</time>
+          <time className="shop-detail__posted-time">{product.createdAt}</time>
         </div>
 
         {/* 상품 설명 */}
@@ -84,7 +100,7 @@ const ShopDetail = () => {
 
         {/* 상품 상세 정보 */}
         <section className="shop-detail__details">
-          {product.details.map((detail, index) => (
+          {detailRows.map((detail, index) => (
             <div key={index} className="shop-detail__detail-row">
               <span className="shop-detail__detail-label">{detail.label}</span>
               <span className="shop-detail__detail-value">{detail.value}</span>
@@ -92,7 +108,7 @@ const ShopDetail = () => {
           ))}
         </section>
 
-        {/* AI 추천 섹션 */}
+        {/* AI 추천 섹션
         <section className="shop-detail__recommendations">
           <h2 className="shop-detail__recommendations-title">
             AI가 추천해주는 해당 옷과 잘 어울릴 당신의 옷
@@ -112,7 +128,7 @@ const ShopDetail = () => {
               </span>
             ))}
           </div>
-        </section>
+        </section> */}
 
         {/* 구매 버튼 */}
         <button className="shop-detail__purchase-button" onClick={handlePurchase}>

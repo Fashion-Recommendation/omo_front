@@ -91,25 +91,56 @@ const useClosetStore = create((set, get) => ({
     set({ isLoading: true, error: null })
     try {
       const response = await closetApi.getClosetItems(userId)
+  
+      // Django 응답 → 프론트 구조로 변환
+      const items = (response.fashion_items || []).map((item) => ({
+        fashion_item_id: item.id,
+        name: item.name,
+        category: item.category,
+        style: item.style,
+        season: item.season,
+        size: item.size,
+        image_url: item.image_url,
+        wear_cnt: item.wear_cnt,
+        is_on_sale: item.is_on_sale,
+      }))
+  
       set({
-        items: response.fashion_items || [],
-        showCloset: response.showCloset,
+        items,
+        showCloset: response.show_closet,
       })
+  
       return response
     } catch (error) {
       console.warn('API 연결 실패, 더미 데이터 사용:', error.message)
       set({ items: DUMMY_CLOSET_ITEMS, showCloset: true })
-      return { fashion_items: DUMMY_CLOSET_ITEMS, showCloset: true }
+      return { fashion_items: DUMMY_CLOSET_ITEMS, show_closet: true }
     } finally {
       set({ isLoading: false })
     }
   },
+  
 
   fetchClothesDetail: async (fashionItemId) => {
     set({ isLoading: true, error: null })
     try {
-      const item = await closetApi.getClothesDetail(fashionItemId)
+      const raw = await closetApi.getClothesDetail(fashionItemId)
+
+      const item = {
+        fashion_item_id: raw.id,
+        member_id: raw.member_id,
+        name: raw.name,
+        category: raw.category,
+        style: raw.style,
+        season: raw.season,
+        size: raw.size,
+        wear_cnt: raw.wear_cnt,
+        is_on_sale: raw.is_on_sale,
+        image_url: raw.image_url,
+      }
+      
       set({ selectedItem: item })
+      
       return item
     } catch (error) {
       console.warn('API 연결 실패, 더미 데이터 사용:', error.message)

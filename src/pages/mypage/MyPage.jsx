@@ -6,7 +6,7 @@ import useUserStore from '../../store/userStore'
 
 const PersonalInfoSection = ({ data }) => {
   const personalDetails = [
-    { label: '이름', value: data.name || '-' },
+    { label: '이름', value: data.username || '-' },
     { label: '이메일', value: data.email || '-' },
   ]
 
@@ -54,7 +54,7 @@ const MyPage = () => {
   }
 
   const handleProfile = () => {
-    navigate(`/sns/profile/${currentUser?.member_id}`)
+    navigate(`/sns/profile/${currentUser?.id}`)
   }
 
   const handleEdit = () => {
@@ -91,7 +91,7 @@ const MyPage = () => {
             }}
           />
           <div className="profile-info">
-            <h2 className="profile-username">{currentUser?.name || '사용자'}님</h2>
+            <h2 className="profile-username">{currentUser?.username || '사용자'}님</h2>
           </div>
         </div>
 

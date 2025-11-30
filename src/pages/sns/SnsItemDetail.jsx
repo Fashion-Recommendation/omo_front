@@ -1,8 +1,10 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import TopBar from '../../components/TopBar'
 import BottomNav from '../../components/BottomNav'
 import useUserStore from '../../store/userStore'
+import useClosetStore from '../../store/closetStore'
+import useSnsStore from '../../store/snsStore'
 
 // 더미 데이터
 const ITEM_DETAIL_DATA = {
@@ -27,11 +29,17 @@ const ITEM_DETAIL_DATA = {
 }
 
 const SnsItemDetail = () => {
-  const { postId, itemId } = useParams()
+  const { itemId } = useParams()
   const navigate = useNavigate()
   const { currentUser } = useUserStore()
-  const item = ITEM_DETAIL_DATA[itemId] || ITEM_DETAIL_DATA[1]
+  const { selectedItem, fetchClothesDetail } = useClosetStore()
+  const { profile, fetchUserProfile } = useSnsStore()
+  
+  useEffect(() => { fetchClothesDetail(itemId); }, [itemId, fetchClothesDetail]);
 
+  useEffect(() => {
+    if (selectedItem?.member_id) fetchUserProfile(selectedItem.member_id);
+  }, [selectedItem?.member_id, fetchUserProfile]);
   const handleBack = () => {
     window.history.back()
   }
@@ -44,6 +52,9 @@ const SnsItemDetail = () => {
     console.log('77샵 구매하러 가기')
   }
 
+  const item = selectedItem
+  if (!item) return <div>로딩 중...</div>;
+
   return (
     <div className="page">
       <TopBar onBack={handleBack} onProfile={handleProfile} />
@@ -51,13 +62,14 @@ const SnsItemDetail = () => {
       <main className="sns-item-detail__content">
         {/* 사용자 정보 */}
         <div className="sns-item-detail__user">
-          <div className="sns-item-detail__avatar" />
-          <span className="sns-item-detail__username">{item.username}</span>
+          <div className="sns-item-detail__avatar" style={{ backgroundImage: `url(${profile?.profileImage || ''})` }} />
+          <span className="sns-item-detail__username">{profile?.username ?? '사용자'}</span>
         </div>
+
 
         {/* 메인 이미지 */}
         <div className="sns-item-detail__main-image">
-          <img src={item.mainImage} alt={item.name} />
+          <img src={item.image_url} alt={item.name} />
         </div>
 
         {/* 상품명과 77로고 */}
@@ -68,16 +80,15 @@ const SnsItemDetail = () => {
 
         {/* 상품 상세 정보 */}
         <section className="sns-item-detail__details">
-          {item.details.map((detail, index) => (
-            <div key={index} className="sns-item-detail__detail-row">
-              <span className="sns-item-detail__detail-label">{detail.label}</span>
-              <span className="sns-item-detail__detail-value">{detail.value}</span>
-            </div>
-          ))}
+          <div className="sns-item-detail__detail-row"><span>사이즈</span><span>{item.size}</span></div>
+          <div className="sns-item-detail__detail-row"><span>착용횟수</span><span>{item.wear_cnt}</span></div>
+          <div className="sns-item-detail__detail-row"><span>스타일</span><span>{item.style}</span></div>
+          <div className="sns-item-detail__detail-row"><span>계절</span><span>{item.season}</span></div>
+          <div className="sns-item-detail__detail-row"><span>카테고리</span><span>{item.category}</span></div>
         </section>
 
-        {/* AI 추천 섹션 */}
-        <section className="sns-item-detail__recommendations">
+        {/* AI 추천 섹션
+        { <section className="sns-item-detail__recommendations">
           <h2 className="sns-item-detail__recommendations-title">
             AI가 추천해주는 해당 옷과 잘 어울릴 당신의 옷
           </h2>
@@ -89,7 +100,7 @@ const SnsItemDetail = () => {
               </div>
             ))}
           </div>
-        </section>
+        </section>} */}
 
         {/* 77샵 구매 버튼 */}
         <button className="sns-item-detail__purchase-button" onClick={handlePurchase}>

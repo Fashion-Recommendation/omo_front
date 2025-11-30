@@ -4,8 +4,8 @@ import * as memberApi from '../api/member'
 
 // ========== 더미 데이터 ==========
 const DUMMY_USER = {
-  member_id: 1,
-  name: '홍길동',
+  id: 1,
+  username: '홍길동',
   email: 'hong@example.com',
   height: 175,
   weight: 70,

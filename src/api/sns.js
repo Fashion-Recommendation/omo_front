@@ -14,7 +14,13 @@ export const getUserProfile = async (memberId) => {
 
 // 유저 게시글 목록 조회
 export const getUserPosts = async (memberId) => {
-  const response = await client.get(`/sns/posts/${memberId}`)
+  const response = await client.get(`/sns/${memberId}/posts`)
+  return response.data
+}
+
+// 유저 옷장 목록 조회
+export const getUserCloset = async (memberId) => {
+  const response = await client.get(`/sns/${memberId}/clothes`)
   return response.data
 }
 
@@ -26,21 +32,23 @@ export const getPostDetail = async (snsPostId) => {
 
 // 유저 게시글 등록
 export const createPost = async (data) => {
-  const response = await client.post('/sns/posts', data)
+  const response = await client.post('/sns', data)
   return response.data
 }
 
 // 유저 게시글 수정
 export const updatePost = async (snsPostId, data) => {
-  const response = await client.patch(`/sns/posts?post_id=${snsPostId}`, data)
+  const response = await client.patch(`/sns/posts/${snsPostId}`, data)
   return response.data
 }
 
+
 // 유저 게시글 삭제
 export const deletePost = async (snsPostId) => {
-  const response = await client.delete(`/sns/posts?post_id=${snsPostId}`)
+  const response = await client.delete(`/sns/posts/${snsPostId}`)
   return response.data
 }
+
 
 // 게시글 좋아요
 export const likePost = async (snsPostId) => {

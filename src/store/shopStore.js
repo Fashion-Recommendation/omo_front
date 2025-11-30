@@ -87,40 +87,76 @@ const DUMMY_SHOP_DETAIL = {
 
 const useShopStore = create((set, get) => ({
   // ========== State ==========
-  posts: DUMMY_SHOP_POSTS,
+  posts: [],
   selectedPost: null,
   selectedCategory: '전체',
   isLoading: false,
   error: null,
+  detailLoading: false,
+  detailError: null,
 
-  // ========== API Actions ==========
   fetchAllPosts: async () => {
-    set({ isLoading: true, error: null })
+    set({ isLoading: true, error: null });
     try {
-      const response = await shopApi.getAllShopPosts()
-      set({ posts: response.posts || [] })
-      return response
-    } catch (error) {
-      console.warn('API 연결 실패, 더미 데이터 사용:', error.message)
-      set({ posts: DUMMY_SHOP_POSTS })
-      return { posts: DUMMY_SHOP_POSTS }
+      const data = await shopApi.getAllShopPosts(); 
+      const mapped = (data || [])
+        .filter((sale) => sale.status === 'published') 
+        .map((sale) => ({
+          id: sale.id,
+          price: sale.price,
+          status: sale.status,
+          createdAt: sale.created_at,
+          itemId: sale.fashion_item.id,
+          name: sale.fashion_item.name,
+          category: sale.fashion_item.category,
+          color: sale.fashion_item.color,
+          image: sale.fashion_item.image_url,
+          style: sale.fashion_item.style,
+          season: sale.fashion_item.season,
+          size: sale.fashion_item.size,
+        }));
+      set({ posts: mapped });
+      return mapped;
+    } catch (err) {
+      set({ posts: [], error: err.message })
+      return DUMMY_SHOP_POSTS;
     } finally {
-      set({ isLoading: false })
+      set({ isLoading: false });
     }
   },
 
   fetchPostDetail: async (postId) => {
-    set({ isLoading: true, error: null })
+    set({ detailLoading: true, detailError: null })
     try {
-      const post = await shopApi.getShopPostDetail(postId)
-      set({ selectedPost: post })
-      return post
-    } catch (error) {
-      console.warn('API 연결 실패, 더미 데이터 사용:', error.message)
-      set({ selectedPost: DUMMY_SHOP_DETAIL })
-      return DUMMY_SHOP_DETAIL
+      const data = await shopApi.getShopPostDetail(postId);
+      const mapped = {
+        id: data.id,
+        price: data.price,
+        status: data.status,           // published/completed
+        createdAt: data.created_at,
+        seller: {
+          id: data.seller_info.id,
+          username: data.seller_info.username,
+          profileImage: data.seller_info.profile_image_url,
+        },
+        itemId: data.fashion_item.id,
+        name: data.fashion_item.name,
+        category: data.fashion_item.category,
+        color: data.fashion_item.color,
+        image: data.fashion_item.image_url,
+        style: data.fashion_item.style,
+        season: data.fashion_item.season,
+        size: data.fashion_item.size,
+        description: data.content,
+      };
+
+      set({ selectedPost: mapped })
+      return mapped;
+    } catch (err) {
+      set({ detailError: err.message });
+      return null;
     } finally {
-      set({ isLoading: false })
+      set({ detailLoading: false })
     }
   },
 
